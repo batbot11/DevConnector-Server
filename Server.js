@@ -9,6 +9,8 @@ import {ExtractJwt} from "passport-jwt";
 // Import Routes
 import UserRoute from "./routes/api/UserRoute";
 import ProfileRoute from "./routes/api/ProfileRoute";
+import PostRoute from "./routes/api/PostRoute";
+
 import UserModel from "./models/UserModel";
 
 
@@ -44,6 +46,7 @@ app.get("/", (req, res) => res.json({Message: "Server Works!"}));
 // Establish Routes
 app.use("/api/users", UserRoute);
 app.use("/api/profiles", ProfileRoute);
+app.use("/api/posts", PostRoute)
 
 const port = process.env.PORT || 5000;
 
