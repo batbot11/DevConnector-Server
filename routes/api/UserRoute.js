@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import gravatar from "gravatar";
 import passport from "passport";
 import RegisterValidation from "../../validation/RegisterValidtion";
-
+import LoginValidation from "../../validation/LoginValidation";
 
 import UserModel from "../../models/UserModel";
 
@@ -21,7 +21,10 @@ router.get("/register", (req, res) => {
     else {
     UserModel.findOne({email: req.body.email})
     .then(user => {
-        if (user) return res.status(400).json({email: "Email already exists! If its yours please login."})
+        if (user) {
+            errors.email = "Email already exists! If its yours please login.";
+            return res.status(400).json(errors)
+        }
         else {
             const newUser = new UserModel({
                 name: req.body.name,
@@ -37,10 +40,13 @@ router.get("/register", (req, res) => {
 }
 })
 
-//@Route       POST api/users
+//@Route       POST api/users/login
 //@Description User Login route
 //@Security    Public
 router.post("/login", (req, res) => {
+    const {errors, isNotValid} = LoginValidation(req.body);
+    if (isNotValid) return res.status(400).json(errors)
+    else {
     const {email, password} = req.body;
     UserModel.findOne({email})
     .then(user => {
@@ -51,6 +57,7 @@ router.post("/login", (req, res) => {
             .catch(err => res.status(400).json(err))
         }
     })
+}
 })
 
 //@Route       GET api/users/current
