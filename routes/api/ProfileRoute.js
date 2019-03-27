@@ -50,5 +50,49 @@ router.post("/", passport.authenticate("jwt", {session: false}), (req, res) => {
 }
 })
 
+//@Route       GET api/profiles/handle/:handle
+//@Description Get profile by handle (SEO friendly)
+//@Security    Private
+router.get("/handle/:handle", passport.authenticate("jwt", {session: false}), (req, res) => {
+    const errors = {};
+    ProfileModel.findOne({handle: req.params.handle})
+    .then(profile => {
+        if (!profile) {
+            errors.noProfile = "There is no profile with this handle";
+            res.status(404).json(errors)
+        }
+        else res.json(profile)
+    })
+})
+
+//@Route       GET api/profiles/user/:user_id
+//@Description Get profile by User's Id
+//@Security    Private
+router.get("/user/:user_id", passport.authenticate("jwt", {session: false}), (req, res) => {
+   const errors = {};
+    ProfileModel.findOne({user: req.params.user_id})
+    .then(profile => {
+        if (!profile) {
+            errors.noProfile = "There is no profile with this UserId";
+            res.status(404).json(errors)
+        }
+        else res.json(profile)
+   })
+})
+
+//@Route       GET api/profiles/all
+//@Description Get all profiles present in the database
+//@Security    Public
+router.get("/all", (req, res) => {
+    const errors = {};
+    ProfileModel.find()
+    .then(profiles => {
+        if (!profiles) {
+            errors.noProfiles = "Profiles are not currently accessible";
+            res.status(404).json(errors)
+        }
+        else res.json(profiles)
+    })
+})
 
 export default router;
