@@ -31,11 +31,13 @@ router.post("/", passport.authenticate("jwt", {session: false}), (req, res) => {
              .then(profileHandle => {
                  if (profileHandle) res.status(400).json({Message: "User handle already exists!"})
                  else newProfile.save().then(profile => res.json(profile))
+                 .catch(err => res.status(400).json(err))
              })
         } 
         else {
-            
-            
+             profile.fillProfile(req.body);
+             profile.save()
+             .then(updatedProfile => res.json(updatedProfile))
         }
     })
 })
