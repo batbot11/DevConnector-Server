@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const schema = new mongoose.Schema({
-    user: {type: Schema.Types.ObjectId, ref: "users"},
+    user: {type: Schema.Types.Object, ref: "users"},
     handle: {type: String, required: true, max: 40},
     company: {type: String},
     website: {type: String},
@@ -35,7 +35,11 @@ const schema = new mongoose.Schema({
         linkedin: {type: String},
         instagram: {type: String}
     },
-    date: {type: Date, default: Date.now}
+    date: {type: Date, default: Date.now},
+    profileData: {
+        name: {type: String, required: true},
+        avatar: {type: String, required: true}
+    }
 },
 {collection: "profiles"}
 )
@@ -56,6 +60,11 @@ schema.methods.fillProfile = function fillProfile (data) {
     if (data.linkedin) this.social.linkedin = data.linkedin;
     if (data.instagram) this.social.instagram = data.instagram;
 
+}
+
+schema.methods.addName = function addName (data) {
+     this.profileData.name = data.name;
+    this.profileData.avatar = data.avatar;
 }
 
 export default mongoose.model("ProfileModel", schema);
