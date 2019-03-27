@@ -40,4 +40,22 @@ const schema = new mongoose.Schema({
 {collection: "profiles"}
 )
 
+schema.methods.fillProfile = function fillProfile (data) {
+    
+    if (data.handle) this.handle = data.handle;
+    if (data.company) this.company = data.company;
+    if (data.website) this.website = data.website;
+    if (data.location) this.location = data.location;
+    if (data.bio) this.bio = data.bio;
+    if (data.status) this.status = data.status;
+    if (data.githubusername) this.githubusername = data.githubusername;
+    if (typeof data.skills !== "undefined") this.skills = data.skills.split(",");
+    if (data.youtube) this.social.youtube = data.youtube;
+    if (data.facebook) this.social.facebook = data.facebook;
+    if (data.twitter) this.social.twitter = data.twitter;
+    if (data.linkedin) this.social.linkedin = data.linkedin;
+    if (data.instagram) this.social.instagram = data.instagram;
+
+}
+
 export default mongoose.model("ProfileModel", schema);
