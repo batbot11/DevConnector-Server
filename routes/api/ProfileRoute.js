@@ -1,6 +1,7 @@
 import express from "express";
 import passport from "passport";
 import ProfileModel from "../../models/ProfileModel";
+import UserModel from "../../models/UserModel";
 import ProfileValidation from "../../validation/ProfileValidation";
 import ExperienceValidation from "../../validation/ExperienceValidation";
 import EducationValidation from "../../validation/EducationValidation";
@@ -130,5 +131,46 @@ router.post("/education", passport.authenticate("jwt", {session: false}), (req, 
     })
 }
 })
+
+//@Route       DELETE api/profiles/experience/:experience_id
+//@Description Delete an object from Experience array
+//@Security    Private
+router.delete("/experience/:experience_id", passport.authenticate("jwt", {session: false}), (req, res) => {
+    ProfileModel.findOne({user: req.user.id})
+    .then(profile => {
+        const deletionIndex = profile.experience.map(experiences =>
+             experiences.id).indexOf(req.params.experience_id);
+        profile.experience.splice(deletionIndex, 1);
+        profile.save()
+        .then(updatedProfile => res.json(updatedProfile))
+        .catch(err => res.status(404).json(err))
+    })
+})
+
+//@Route       DELETE api/profiles/education/:education_id
+//@Description Delete an object from Education array
+//@Security    Private
+router.delete("/education/:education_id", passport.authenticate("jwt", {session: false}), (req, res) => {
+    ProfileModel.findOne({user: req.user.id})
+    .then(profile => {
+        const deletionIndex = profile.education.map(educationObjects => 
+            educationObjects.id).indexOf(req.params.education_id);
+            profile.education.splice(deletionIndex, 1);
+            profile.save()
+            .then(updatedProfile => res.json(updatedProfile))
+            .catch(err => res.status(404).json(err))
+    })
+})
+
+//@Route       DELETE api/profiles/
+//@Description Delete the account with his/her profile
+//@Security    Private
+router.delete("/", passport.authenticate("jwt", {session: false}), (req, res) => {
+    ProfileModel.findOneAndDelete({user: req.user.id})
+    .then(() => UserModel.findByIdAndDelete(req.user.id))
+    .then(() => res.json({Message: "Account is successfully deleted!"}))
+    .catch(err => res.status(400).json(err))
+})
+
 
 export default router;
