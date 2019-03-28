@@ -67,4 +67,40 @@ schema.methods.addName = function addName (data) {
     this.profileData.avatar = data.avatar;
 }
 
+schema.methods.addExperience = function addExperience (data) {
+    const experienceField = {};
+    experienceField.title = data.title;
+    experienceField.company = data.company;
+    if (data.location) {
+        experienceField.location = data.location
+    }
+    experienceField.from = data.from
+
+    if (data.to) {
+        experienceField.to = data.to
+    }
+    if (data.current) {
+        experienceField.current = data.current
+    }
+    this.experience.unshift(experienceField)
+}
+
+schema.methods.addEducation = function addEducation (data) {
+    const educationField = {};
+    educationField.school = data.school;
+    educationField.degree = data.degree;
+    educationField.fieldofstudy = data.fieldofstudy;
+    educationField.from = data.from;
+    if (data.to) {
+        educationField.to = data.to
+    }
+    if (data.current) {
+        educationField.current = data.current
+    }
+    if (data.description) {
+        educationField.description = data.description
+    }
+    this.education.unshift(educationField)
+}
+
 export default mongoose.model("ProfileModel", schema);

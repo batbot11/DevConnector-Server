@@ -2,7 +2,8 @@ import express from "express";
 import passport from "passport";
 import ProfileModel from "../../models/ProfileModel";
 import ProfileValidation from "../../validation/ProfileValidation";
-import UserModel from "../../models/UserModel";
+import ExperienceValidation from "../../validation/ExperienceValidation";
+import EducationValidation from "../../validation/EducationValidation";
 
 const router = express.Router();
 
@@ -93,6 +94,41 @@ router.get("/all", (req, res) => {
         }
         else res.json(profiles)
     })
+})
+
+//@Route       POST api/profiles/experience
+//@Description Post to experience array in Profile
+//@Security    Private
+router.post("/experience", passport.authenticate("jwt", {session: false}), (req, res) => {
+    const {errors, isNotValid} = ExperienceValidation(req.body);
+    if (isNotValid) return res.status(400).json(errors)
+    else {
+    ProfileModel.findOne({user: req.user.id})
+    .then(profile => {
+        profile.addExperience(req.body);
+        profile.save()
+        .then(savedProfile => res.json(savedProfile))
+        .catch(err => res.status(400).json(err))
+    })
+}
+})
+
+//@Route       POST api/profiles/education
+//@Description Post to education array in Profile
+//@Security    Private
+
+router.post("/education", passport.authenticate("jwt", {session: false}), (req, res) => {
+    const {errors, isNotValid} = EducationValidation(req.body);
+    if (isNotValid) return res.status(400).json(errors)
+    else {
+    ProfileModel.findOne({user: req.user.id})
+    .then(profile => {
+        profile.addEducation(req.body);
+        profile.save()
+        .then(savedProfile => res.json(savedProfile))
+        .catch(err => res.status(400).json(err))
+    })
+}
 })
 
 export default router;
