@@ -11,10 +11,10 @@ const router = express.Router();
 
 router.get("/test", (req, res) => res.json({Message: "Test route works!!!"}));
 
-//@Route       GET api/users/register
+//@Route       POST api/users/register
 //@Description User Registration route
 //@Security    Public  
-router.get("/register", (req, res) => {
+router.post("/register", (req, res) => {
     const {errors, isNotValid} = RegisterValidation(req.body);
 
     if (isNotValid) return res.status(400).json(errors)
