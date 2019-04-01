@@ -15,9 +15,9 @@ router.get("/test", (req, res) => res.json({Message: "Test route works!!!"}));
 //@Description User Registration route
 //@Security    Public  
 router.post("/register", (req, res) => {
-    const {errors, isNotValid} = RegisterValidation(req.body);
+   const {errors, isNotValid} = RegisterValidation(req.body);
 
-    if (isNotValid) return res.status(400).json(errors)
+   if (isNotValid) return res.status(400).json(errors)
     else {
     UserModel.findOne({email: req.body.email})
     .then(user => {
