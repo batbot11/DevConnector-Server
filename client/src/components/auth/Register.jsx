@@ -23,6 +23,7 @@ class Register extends React.Component {
     submit = (e) => {
        e.preventDefault();
       this.props.registerUser(this.state.data).then(() => this.props.history.push("/login"))
+      .catch(err => this.setState({errors: err.response.data}))
     }
 
     render () {

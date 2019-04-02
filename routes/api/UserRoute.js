@@ -33,7 +33,7 @@ router.post("/register", (req, res) => {
                 avatar: gravatar.url(req.body.email, {s: '200', r: 'pg', d: 'mm'})
             })
         newUser.save()
-        .then(user => res.json(user.toClientSide()))
+        .then(newUser => res.json(newUser.toClientSide()))
         .catch(err => res.status(400).json(err))
         }
     })
