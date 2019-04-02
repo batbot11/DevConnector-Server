@@ -4,13 +4,23 @@ import {createStore, applyMiddleware, combineReducers} from "redux";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {Provider} from "react-redux";
 import thunk from "redux-thunk";
+import jwt_decode from "jwt-decode";
 import './index.css';
 import App from './App.jsx';
 import * as serviceWorker from './serviceWorker';
 import authReducer from "./components/reducers/authReducer";
+import setAuthToken from "./utils/setAuthToken";
+import {userLoggedIn} from "./components/actions/authActions";
 
 const rootReducer  = combineReducers({auth: authReducer})
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+
+// Set to current user on reload
+if (localStorage.jwtToken) {
+    setAuthToken(localStorage.jwtToken);
+    const decoded = jwt_decode(localStorage.jwtToken);
+    store.dispatch(userLoggedIn(decoded))
+}
 
 ReactDOM.render(
 <Provider store = {store} >

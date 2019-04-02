@@ -1,4 +1,4 @@
-import { USER_REGISTERED, ERROR_DETECTED } from "../constants/constants";
+import { USER_REGISTERED, USER_LOGGED_IN, USER_LOGGED_OUT } from "../constants/constants";
 
 
 
@@ -11,8 +11,10 @@ export default function (state = initialState, action) {
     switch (action.type) {
         case USER_REGISTERED:
         return {...state, user: action.payload}
-        case ERROR_DETECTED:
-        return {...state, errors: action.payload}
+       case USER_LOGGED_IN:
+       return {...state, user: action.payload}
+       case USER_LOGGED_OUT:
+       return initialState
         default : return state
     }
 }

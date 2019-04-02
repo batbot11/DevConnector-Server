@@ -1,5 +1,7 @@
 import React from "react";
-
+import {connect} from "react-redux";
+import {login} from "../actions/authActions";
+import InlineError from "../messages/InlineError";
 
 class Login extends React.Component {
 
@@ -19,10 +21,12 @@ class Login extends React.Component {
 
     submit = (e) => {
         e.preventDefault();
-        console.log(this.state.data)
+        this.props.login(this.state.data).then(() => this.props.history.push("/dashboard"))
+        .catch(err => this.setState({errors: err.response.data}))
     }
 
     render () {
+      const {errors} = this.state;
         return (
             <div className="login">
             <div className="container">
@@ -37,6 +41,7 @@ class Login extends React.Component {
                        value = {this.state.data.email}
                        onChange = {this.onChange}
                        />
+                       {errors.email && <InlineError text={errors.email} />}
                     </div>
                     <div className="form-group">
                       <input type="password" className="form-control form-control-lg"
@@ -44,6 +49,7 @@ class Login extends React.Component {
                        value = {this.state.data.password}
                        onChange = {this.onChange}
                        />
+                       {errors.password && <InlineError text={errors.password} />}
                     </div>
                     <input type="submit" className="btn btn-info btn-block mt-4" />
                   </form>
@@ -57,4 +63,4 @@ class Login extends React.Component {
 }
 
 
-export default Login;
+export default connect(null, {login})(Login);

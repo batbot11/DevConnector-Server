@@ -7,18 +7,23 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 
 
-const App = () => (
-    <BrowserRouter >
-    <div className="App" >
-        <Navbar/>
-        <Route path = "/" exact component = {Landing} />
-        <div className="container">
-        <Route path="/login" exact component = {Login} />
-        <Route path="/register" exact component = {Register} />
-        </div>
-        <Footer/>
-    </div>
-    </BrowserRouter>
-)
+class App extends React.Component {
+    
+    render () {
+        return (
+            <BrowserRouter >
+            <div className="App" >
+                <Navbar/>
+                <Route path = "/" exact component = {Landing} />
+                <div className="container">
+                <Route path="/login" exact component = {Login} />
+                <Route path="/register" exact component = {Register} />
+                </div>
+                <Footer/>
+            </div>
+            </BrowserRouter>
+        )
+    }
+}
 
 export default App;
