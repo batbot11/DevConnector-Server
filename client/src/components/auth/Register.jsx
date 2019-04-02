@@ -1,7 +1,7 @@
 import React from "react";
-import axios from "axios";
+import {connect} from "react-redux";
 import InlineError from "../messages/InlineError";
-
+import {registerUser} from "../actions/authActions";
 
 class Register extends React.Component {
 
@@ -21,10 +21,8 @@ class Register extends React.Component {
     }
 
     submit = (e) => {
-        e.preventDefault();
-        axios.post("/api/users/register", this.state.data )
-        .then(res => console.log(res.data))
-        .catch(err => this.setState({errors: err.response.data}))
+       e.preventDefault();
+      this.props.registerUser(this.state.data).then(() => this.props.history.push("/login"))
     }
 
     render () {
@@ -83,4 +81,4 @@ class Register extends React.Component {
 }
 
 
-export default Register;
+export default connect(null, {registerUser})(Register);
