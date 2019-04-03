@@ -39,5 +39,5 @@ export const userLoggedOut = () => ({
 export const logout = () => dispatch => {
   localStorage.removeItem("jwtToken");
   setAuthToken(false);
-  dispatch(userLoggedOut())
+ return dispatch(userLoggedOut())
 }
