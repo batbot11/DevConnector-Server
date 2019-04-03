@@ -4,6 +4,7 @@ import {createStore, applyMiddleware, combineReducers} from "redux";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {Provider} from "react-redux";
 import thunk from "redux-thunk";
+import {BrowserRouter, Route} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import './index.css';
 import App from './App.jsx';
@@ -24,7 +25,9 @@ if (localStorage.jwtToken) {
 
 ReactDOM.render(
 <Provider store = {store} >
-<App />
+<BrowserRouter >
+<Route component = {App} />
+</BrowserRouter>
 </Provider>
 , document.getElementById('root'));
 

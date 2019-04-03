@@ -3,7 +3,6 @@ import { USER_REGISTERED, USER_LOGGED_IN, USER_LOGGED_OUT } from "../constants/c
 
 
 const initialState = {
-    isAuthenticated: false,
     user: {}
 }
 
