@@ -11,7 +11,7 @@ import App from './App.jsx';
 import * as serviceWorker from './serviceWorker';
 import authReducer from "./components/reducers/authReducer";
 import setAuthToken from "./utils/setAuthToken";
-import {userLoggedIn} from "./components/actions/authActions";
+import {userLoggedIn, userLoggedOut} from "./components/actions/authActions";
 
 const rootReducer  = combineReducers({auth: authReducer})
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
@@ -21,6 +21,16 @@ if (localStorage.jwtToken) {
     setAuthToken(localStorage.jwtToken);
     const decoded = jwt_decode(localStorage.jwtToken);
     store.dispatch(userLoggedIn(decoded))
+    // Check for expired token
+    const currentTime = Date.now() / 1000;
+    if (decoded.exp < currentTime) {
+        localStorage.removeItem("jwtToken");
+         setAuthToken(false);
+        store.dispatch(userLoggedOut());
+        // Todo: clear current profile
+        // Redirect to login
+        window.location.href = "/login"
+    }
 }
 
 ReactDOM.render(

@@ -1,5 +1,4 @@
 import React from "react";
-import { Route} from "react-router-dom";
 import GuestRoute from "./utils/GuestRoute";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
@@ -12,7 +11,7 @@ const App = ({location}) => (
     
             <div className="App" >
                 <Navbar/>
-                <Route path = "/" location = {location} exact component = {Landing} />
+                <GuestRoute path = "/" location = {location} exact component = {Landing} />
                 <div className="container">
                 <GuestRoute path="/login" location = {location} exact component = {Login} />
                 <GuestRoute path="/register" location = {location} exact component = {Register} />
